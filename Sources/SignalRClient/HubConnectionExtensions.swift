@@ -8,8 +8,9 @@
 import Foundation
 
 extension HubConnection {
+
     /**
-     Invokes a server side hub method with no parameters that does not return a result.
+     Invokes a server side hub method with or without parameter that does not return a result.
 
      The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
      callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
@@ -17,34 +18,18 @@ extension HubConnection {
      server side threw an exception.
 
      - parameter method: the name of the server side hub method to invoke
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(method: String, invocationDidComplete: @escaping (_ error: Error?) -> Void) {
-        self.invoke(method: method, arguments: [], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 1 parameter that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
+     - parameter arguments: arguments of the hub method
      - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
      - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
      */
     public func invoke(
-        method: String, _ arg1: Encodable, invocationDidComplete: @escaping (_ error: Error?) -> Void
+        method: String, arguments: Encodable..., invocationDidComplete: @escaping (_ error: Error?) -> Void
     ) {
-        self.invoke(method: method, arguments: [arg1], invocationDidComplete: invocationDidComplete)
+        self.invoke(method: method, arguments: arguments, invocationDidComplete: invocationDidComplete)
     }
 
     /**
-     Invokes a server side hub method with 2 parameters that does not return a result.
+     Invokes a void server side hub method with a client stream and with or without parameters.
 
      The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
      callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
@@ -52,224 +37,47 @@ extension HubConnection {
      server side threw an exception.
 
      - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(method: method, arguments: [arg1, arg2], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 3 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(method: method, arguments: [arg1, arg2, arg3], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 4 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(method: method, arguments: [arg1, arg2, arg3, arg4], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 5 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 6 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 7 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 8 parameters that does not return a result.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter arg8: eighth argument of the hub method
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke
-
-        (
-            method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-            _ arg5: Encodable, _ arg6: Encodable, _ arg7: Encodable, _ arg8: Encodable,
-            invocationDidComplete: @escaping (_ error: Error?) -> Void
-        )
-    {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a void server side hub method with a client stream and no parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
+     - parameter arguments: arguments of the hub method
      - parameter clientStream: client stream producing items to be sent to the server
      - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
      - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
      */
     @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func invoke(
-        method: String, clientStream: AsyncStream<Encodable>, invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [], clientStreams: [clientStream], invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a void server side hub method with a client stream and one parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke(
-        method: String, _ arg1: Encodable, clientStream: AsyncStream<Encodable>,
+        method: String, arguments: Encodable..., clientStream: AsyncStream<Encodable>,
         invocationDidComplete: @escaping (_ error: Error?) -> Void
     ) {
         self.invoke(
-            method: method, arguments: [arg1], clientStreams: [clientStream],
+            method: method, arguments: arguments, clientStreams: [clientStream],
             invocationDidComplete: invocationDidComplete)
     }
 
     /**
-     Invokes a void server side hub method with a client stream and two parameters.
+     Invokes a server side hub method with or without parameters that returns a result.
+
+     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
+     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
+     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
+     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
+
+     - parameter method: the name of the server side hub method to invoke
+     - parameter arguments: arguments of the hub method
+     - parameter resultType: the type of the result returned by the hub method
+     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
+     - parameter result: the result returned by the hub method
+     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
+     */
+    public func invoke<TRes: Decodable>(
+        method: String, arguments: Encodable..., resultType: TRes.Type,
+        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
+    ) {
+        self.invoke(
+            method: method, arguments: arguments, resultType: resultType, invocationDidComplete: invocationDidComplete)
+    }
+
+
+    /**
+     Invokes a non-void server side hub method with a client stream with or without parameters.
 
      The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
      callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
@@ -277,329 +85,7 @@ extension HubConnection {
      server side threw an exception.
 
      - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, clientStream: AsyncStream<Encodable>,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2], clientStreams: [clientStream],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a void server side hub method with a client stream and three parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, clientStream: AsyncStream<Encodable>,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3], clientStreams: [clientStream],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a void server side hub method with a client stream and four parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        clientStream: AsyncStream<Encodable>, invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4], clientStreams: [clientStream],
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with no parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(method: method, arguments: [], resultType: resultType, invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 1 parameter that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1], resultType: resultType, invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 2 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 3 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 4 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 5 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 6 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 7 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable,
-        resultType: TRes.Type, invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 8 parameters that returns a result.
-
-     The `invoke` method invokes a server side hub method and returns the result of the invocation or error. If the server side method completed successfully
-     the `invocationDidComplete` callback will be called with the result returned by the method and `nil` error. Otherwise the `error` parameter of the
-     `invocationDidComplete` callback will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully
-     (for example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter arg8: eighth argument of the hub method
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter invocationDidComplete:  a completion handler that will be invoked when the invocation has completed
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable, _ arg8: Encodable,
-        resultType: TRes.Type, invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a non-void server side hub method with a client stream and no parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
+     - parameter arguments: arguments of the hub method
      - parameter clientStream: client stream producing items to be sent to the server
      - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
      - parameter resultType: the type of the result returned by the hub method
@@ -608,317 +94,30 @@ extension HubConnection {
      */
     @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func invoke<TRes: Decodable>(
-        method: String, clientStream: AsyncStream<Encodable>, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [], clientStreams: [clientStream], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a non-void server side hub method with a client stream and one parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable,
+        method: String, arguments: Encodable...,
         clientStream: AsyncStream<Encodable>, resultType: TRes.Type,
         invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
     ) {
         self.invoke(
-            method: method, arguments: [arg1], clientStreams: [clientStream], resultType: resultType,
+            method: method, arguments: arguments, clientStreams: [clientStream], resultType: resultType,
             invocationDidComplete: invocationDidComplete)
     }
 
     /**
-     Invokes a non-void server side hub method with a client stream and two parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable,
-        clientStream: AsyncStream<Encodable>, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2], clientStreams: [clientStream], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a non-void server side hub method with a client stream and three parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable,
-        clientStream: AsyncStream<Encodable>, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3], clientStreams: [clientStream], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a non-void server side hub method with a client stream and four parameters.
-
-     The `invoke` method invokes a server side hub method and returns the status of the invocation. The `error` parameter of the `invocationDidComplete`
-     callback will be `nil` if the invocation was successful. Otherwise it will contain failure details. Note that the failure can be local - e.g. the
-     invocation was not initiated successfully (for example the connection was not connected when invoking the method), or remote - e.g. the hub method on the
-     server side threw an exception.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub methodˆ
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter resultType: the type of the result returned by the hub method
-     - parameter result: the result returned by the hub method
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func invoke<TRes: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        clientStream: AsyncStream<Encodable>, resultType: TRes.Type,
-        invocationDidComplete: @escaping (_ result: TRes?, _ error: Error?) -> Void
-    ) {
-        self.invoke(
-            method: method, arguments: [arg1, arg2, arg3, arg4], clientStreams: [clientStream], resultType: resultType,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method without parameters in a fire-and-forget manner.
+     Invokes a server side hub method with or without parameters in a fire-and-forget manner.
 
      When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
 
      - parameter method: the name of the server side hub method to invoke
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(method: String, sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }) {
-        self.send(method: method, arguments: [], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 1 parameter in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
+     - parameter arguments: arguments of the hub method
      - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
                                   invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
      - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
      */
     public func send(
-        method: String, _ arg1: Encodable, sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
+        method: String, arguments: Encodable..., sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
     ) {
-        self.send(method: method, arguments: [arg1], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 2 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(method: method, arguments: [arg1, arg2], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 3 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(method: method, arguments: [arg1, arg2, arg3], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 4 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(method: method, arguments: [arg1, arg2, arg3, arg4], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 5 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(method: method, arguments: [arg1, arg2, arg3, arg4, arg5], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 6 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 7 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7], sendDidComplete: sendDidComplete)
-    }
-
-    /**
-     Invokes a server side hub method with 8 parameters in a fire-and-forget manner.
-
-     When a hub method is invoked in a fire-and-forget manner the client never receives any result of the invocation nor is notified about the invocation status.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter arg8: eighth argument of the hub method
-     - parameter sendDidComplete: a completion handler that allows to track whether the client was able to successfully initiate the invocation. If the
-                                  invocation was successfully initiated the `error` will be `nil`. Otherwise the `error` will contain failure details
-     - parameter error: contains failure details if the invocation was not initiated successfully. `nil` otherwise
-     */
-    public func send(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable, _ arg8: Encodable,
-        sendDidComplete: @escaping (_ error: Error?) -> Void = { _ in }
-    ) {
-        self.send(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8],
-            sendDidComplete: sendDidComplete)
+        self.send(method: method, arguments: arguments, sendDidComplete: sendDidComplete)
     }
 
     /**
@@ -1193,7 +392,7 @@ extension HubConnection {
     }
 
     /**
-     Invokes a streaming server side hub method with no parameters.
+     Invokes a streaming server side hub method with or without parameter.
 
      The `stream` method invokes a streaming server side hub method. It takes two callbacks
      - `streamItemReceived` - invoked each time a stream item is received
@@ -1203,6 +402,7 @@ extension HubConnection {
                                  example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
 
      - parameter method: the name of the server side hub method to invoke
+     - parameter arguments: arguments of the hub method
      - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
      - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
      - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
@@ -1213,295 +413,17 @@ extension HubConnection {
      ```
      */
     public func stream<TItemType: Decodable>(
-        method: String, streamItemReceived: @escaping (_ item: TItemType) -> Void,
+        method: String, arguments: Encodable..., streamItemReceived: @escaping (_ item: TItemType) -> Void,
         invocationDidComplete: @escaping (_ error: Error?) -> Void
     ) -> StreamHandle {
         return self.stream(
-            method: method, arguments: [], streamItemReceived: streamItemReceived,
+            method: method, arguments: arguments, streamItemReceived: streamItemReceived,
             invocationDidComplete: invocationDidComplete)
     }
+    
 
     /**
-     Invokes a streaming server side hub method with 1 parameter.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 2 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 3 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 4 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 5 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 6 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<
-        TItemType: Decodable
-    >(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 7 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7],
-            streamItemReceived: streamItemReceived, invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with 8 parameters.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. If the streaming method completed successfully or was
-                                 cancelled the callback will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                 will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter arg5: fifth argument of the hub method
-     - parameter arg6: sixth argument of the hub method
-     - parameter arg7: seventh argument of the hub method
-     - parameter arg8: eighth argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable, _ arg5: Encodable,
-        _ arg6: Encodable, _ arg7: Encodable, _ arg8: Encodable,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8],
-            streamItemReceived: streamItemReceived, invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with a client stream and no parameters. It can be used for bidirectional streaming.
+     Invokes a streaming server side hub method with a client stream and with or without parameters. It can be used for bidirectional streaming.
 
      The `stream` method invokes a streaming server side hub method. It takes two callbacks
      - `streamItemReceived` - invoked each time a stream item is received
@@ -1512,39 +434,7 @@ extension HubConnection {
                                 example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
 
      - parameter method: the name of the server side hub method to invoke
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func stream<TItemType: Decodable>(
-        method: String, clientStream: AsyncStream<Encodable>, streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [], clientStreams: [clientStream], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with a client stream and no parameters. It can be used for bidirectional streaming.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. The server side method completes after
-                                the client stream completes. If the streaming method completed successfully or was cancelled the callback
-                                will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
+     - parameter arguments: arguments of the hub method
      - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
      - parameter clientStream: client stream producing items to be sent to the server
      - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
@@ -1557,124 +447,12 @@ extension HubConnection {
      */
     @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, clientStream: AsyncStream<Encodable>,
+        method: String, arguments: Encodable..., clientStream: AsyncStream<Encodable>,
         streamItemReceived: @escaping (_ item: TItemType) -> Void,
         invocationDidComplete: @escaping (_ error: Error?) -> Void
     ) -> StreamHandle {
         return self.stream(
-            method: method, arguments: [arg1], clientStreams: [clientStream], streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with a client stream and no parameters. It can be used for bidirectional streaming.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. The server side method completes after
-                                the client stream completes. If the streaming method completed successfully or was cancelled the callback
-                                will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, clientStream: AsyncStream<Encodable>,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2], clientStreams: [clientStream],
-            streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with a client stream and no parameters. It can be used for bidirectional streaming.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. The server side method completes after
-                                the client stream completes. If the streaming method completed successfully or was cancelled the callback
-                                will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, clientStream: AsyncStream<Encodable>,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3], clientStreams: [clientStream],
-            streamItemReceived: streamItemReceived,
-            invocationDidComplete: invocationDidComplete)
-    }
-
-    /**
-     Invokes a streaming server side hub method with a client stream and no parameters. It can be used for bidirectional streaming.
-
-     The `stream` method invokes a streaming server side hub method. It takes two callbacks
-     - `streamItemReceived` - invoked each time a stream item is received
-     - `invocationDidComplete` - invoked when the invocation of the streaming method has completed. The server side method completes after
-                                the client stream completes. If the streaming method completed successfully or was cancelled the callback
-                                will be called with `nil` error. Otherwise the `error` parameter of the `invocationDidComplete` callback
-                                will contain failure details. Note that the failure can be local - e.g. the invocation was not initiated successfully (for
-                                example the connection was not started when invoking the method), or remote - e.g. the hub method threw an error.
-
-     - parameter method: the name of the server side hub method to invoke
-     - parameter arg1: first argument of the hub method
-     - parameter arg2: second argument of the hub method
-     - parameter arg3: third argument of the hub method
-     - parameter arg4: fourth argument of the hub method
-     - parameter streamItemReceived: a handler that will be invoked each time a stream item is received
-     - parameter clientStream: client stream producing items to be sent to the server
-     - parameter invocationDidComplete: a completion handler that will be invoked when the invocation has completed
-     - parameter error: contains failure details if the invocation was not initiated successfully or the hub method threw an exception. `nil` otherwise
-     - returns: a `StreamHandle` that can be used to cancel the hub method associated with this invocation
-     - note: the `streamItemReceived` parameter may need to be typed if the type cannot be inferred e.g.:
-     ```
-     hubConnection.stream(method: "StreamNumbers", 10, 1, streamItemReceived: { (item: Int) in print("\(item)" }) { error in print("\(error)") }
-     ```
-     */
-    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    public func stream<TItemType: Decodable>(
-        method: String, _ arg1: Encodable, _ arg2: Encodable, _ arg3: Encodable, _ arg4: Encodable,
-        clientStream: AsyncStream<Encodable>,
-        streamItemReceived: @escaping (_ item: TItemType) -> Void,
-        invocationDidComplete: @escaping (_ error: Error?) -> Void
-    ) -> StreamHandle {
-        return self.stream(
-            method: method, arguments: [arg1, arg2, arg3, arg4], clientStreams: [clientStream],
-            streamItemReceived: streamItemReceived,
+            method: method, arguments: arguments, clientStreams: [clientStream], streamItemReceived: streamItemReceived,
             invocationDidComplete: invocationDidComplete)
     }
 }

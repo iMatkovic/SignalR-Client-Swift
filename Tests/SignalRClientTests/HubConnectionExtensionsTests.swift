@@ -58,7 +58,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs1", 42, resultType: Bool.self) { result, error in
+            hubConnection.invoke(method: "InvokeManyArgs1", arguments: 42, resultType: Bool.self) { result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
                 didReceiveInvocationResult.fulfill()
@@ -97,7 +97,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs2", "a", 2, resultType: Bool.self) { result, error in
+            hubConnection.invoke(method: "InvokeManyArgs2", arguments: "a", 2, resultType: Bool.self) { result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
                 didReceiveInvocationResult.fulfill()
@@ -137,7 +137,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs3", "a", 2, "c", resultType: Bool.self) { result, error in
+            hubConnection.invoke(method: "InvokeManyArgs3", arguments: "a", 2, "c", resultType: Bool.self) { result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
                 didReceiveInvocationResult.fulfill()
@@ -178,7 +178,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs4", "a", 2, "c", 4, resultType: Bool.self) { result, error in
+            hubConnection.invoke(method: "InvokeManyArgs4", arguments: "a", 2, "c", 4, resultType: Bool.self) { result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
                 didReceiveInvocationResult.fulfill()
@@ -221,7 +221,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.invoke(method: "InvokeManyArgs5", "a", 2, "c", 4, arg5, resultType: Bool.self) {
+            hubConnection.invoke(method: "InvokeManyArgs5", arguments: "a", 2, "c", 4, arg5, resultType: Bool.self) {
                 result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
@@ -266,7 +266,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.invoke(method: "InvokeManyArgs6", "a", 2, "c", 4, arg5, 6, resultType: Bool.self) {
+            hubConnection.invoke(method: "InvokeManyArgs6", arguments: "a", 2, "c", 4, arg5, 6, resultType: Bool.self) {
                 result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
@@ -312,7 +312,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.invoke(method: "InvokeManyArgs7", "a", 2, "c", 4, arg5, 6, "g", resultType: Bool.self) {
+            hubConnection.invoke(method: "InvokeManyArgs7", arguments: "a", 2, "c", 4, arg5, 6, "g", resultType: Bool.self) {
                 result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
@@ -359,7 +359,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.invoke(method: "InvokeManyArgs8", "a", 2, "c", 4, arg5, 6, "g", true, resultType: Bool.self) {
+            hubConnection.invoke(method: "InvokeManyArgs8", arguments: "a", 2, "c", 4, arg5, 6, "g", true, resultType: Bool.self) {
                 result, error in
                 XCTAssertNil(error)
                 XCTAssertTrue(result!)
@@ -445,7 +445,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
-            hubConnection.invoke(method: "InvokeWithArgs1VoidWithClientStream", 5, clientStream: stream) { error in
+            hubConnection.invoke(method: "InvokeWithArgs1VoidWithClientStream", arguments: 5, clientStream: stream) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationCompletion.fulfill()
                 hubConnection.stop()
@@ -481,7 +481,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
-            hubConnection.invoke(method: "InvokeWithArgs2VoidWithClientStream", 5, 2, clientStream: stream) { error in
+            hubConnection.invoke(method: "InvokeWithArgs2VoidWithClientStream", arguments: 5, 2, clientStream: stream) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationCompletion.fulfill()
                 hubConnection.stop()
@@ -517,7 +517,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
-            hubConnection.invoke(method: "InvokeWithArgs3VoidWithClientStream", 5, 2, 3, clientStream: stream) {
+            hubConnection.invoke(method: "InvokeWithArgs3VoidWithClientStream", arguments: 5, 2, 3, clientStream: stream) {
                 error in
                 XCTAssertNil(error)
                 didReceiveInvocationCompletion.fulfill()
@@ -554,7 +554,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
-            hubConnection.invoke(method: "InvokeWithArgs4VoidWithClientStream", 5, 2, 3, 1, clientStream: stream) {
+            hubConnection.invoke(method: "InvokeWithArgs4VoidWithClientStream", arguments: 5, 2, 3, 1, clientStream: stream) {
                 error in
                 XCTAssertNil(error)
                 didReceiveInvocationCompletion.fulfill()
@@ -625,7 +625,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
             hubConnection.invoke(
-                method: "InvokeWithArgs1WithClientStream", 2, clientStream: stream, resultType: Int.self
+                method: "InvokeWithArgs1WithClientStream", arguments: 2, clientStream: stream, resultType: Int.self
             ) {
                 result, error in
                 XCTAssertNil(error)
@@ -660,7 +660,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
             hubConnection.invoke(
-                method: "InvokeWithArgs2WithClientStream", 1, 2, clientStream: stream, resultType: Int.self
+                method: "InvokeWithArgs2WithClientStream", arguments: 1, 2, clientStream: stream, resultType: Int.self
             ) {
                 result, error in
                 XCTAssertNil(error)
@@ -695,7 +695,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
             hubConnection.invoke(
-                method: "InvokeWithArgs3WithClientStream", 1, 2, 3, clientStream: stream, resultType: Int.self
+                method: "InvokeWithArgs3WithClientStream", arguments: 1, 2, 3, clientStream: stream, resultType: Int.self
             ) {
                 result, error in
                 XCTAssertNil(error)
@@ -730,7 +730,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             let stream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 5)
 
             hubConnection.invoke(
-                method: "InvokeWithArgs4WithClientStream", 1, 2, 3, 4, clientStream: stream, resultType: Int.self
+                method: "InvokeWithArgs4WithClientStream", arguments: 1, 2, 3, 4, clientStream: stream, resultType: Int.self
             ) {
                 result, error in
                 XCTAssertNil(error)
@@ -801,7 +801,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.send(method: "InvokeManyArgs1", 42) { error in
+            hubConnection.send(method: "InvokeManyArgs1", arguments: 42) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -839,7 +839,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.send(method: "InvokeManyArgs2", "a", 2) { error in
+            hubConnection.send(method: "InvokeManyArgs2", arguments: "a", 2) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -878,7 +878,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.send(method: "InvokeManyArgs3", "a", 2, "c") { error in
+            hubConnection.send(method: "InvokeManyArgs3", arguments: "a", 2, "c") { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -918,7 +918,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.send(method: "InvokeManyArgs4", "a", 2, "c", 4) { error in
+            hubConnection.send(method: "InvokeManyArgs4", arguments: "a", 2, "c", 4) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -960,7 +960,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.send(method: "InvokeManyArgs5", "a", 2, "c", 4, arg5) { error in
+            hubConnection.send(method: "InvokeManyArgs5", arguments: "a", 2, "c", 4, arg5) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -1003,7 +1003,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.send(method: "InvokeManyArgs6", "a", 2, "c", 4, arg5, 6) { error in
+            hubConnection.send(method: "InvokeManyArgs6", arguments: "a", 2, "c", 4, arg5, 6) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -1047,7 +1047,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.send(method: "InvokeManyArgs7", "a", 2, "c", 4, arg5, 6, "g") { error in
+            hubConnection.send(method: "InvokeManyArgs7", arguments: "a", 2, "c", 4, arg5, 6, "g") { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -1092,7 +1092,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.send(method: "InvokeManyArgs8", "a", 2, "c", 4, arg5, 6, "g", true) { error in
+            hubConnection.send(method: "InvokeManyArgs8", arguments: "a", 2, "c", 4, arg5, 6, "g", true) { error in
                 XCTAssertNil(error)
                 didSendComplete.fulfill()
             }
@@ -1176,7 +1176,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs1", 42) { error in
+            hubConnection.invoke(method: "InvokeManyArgs1", arguments: 42) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1214,7 +1214,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs2", 42, 84) { error in
+            hubConnection.invoke(method: "InvokeManyArgs2", arguments: 42, 84) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1253,7 +1253,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs3", 42, 84, 126) { error in
+            hubConnection.invoke(method: "InvokeManyArgs3", arguments: 42, 84, 126) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1293,7 +1293,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs4", 42, 84, 126, 168) { error in
+            hubConnection.invoke(method: "InvokeManyArgs4", arguments: 42, 84, 126, 168) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1334,7 +1334,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs5", "a", "b", "c", "d", "e") { error in
+            hubConnection.invoke(method: "InvokeManyArgs5", arguments: "a", "b", "c", "d", "e") { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1376,7 +1376,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs6", true, false, true, false, true, false) { error in
+            hubConnection.invoke(method: "InvokeManyArgs6", arguments: true, false, true, false, true, false) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1419,7 +1419,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            hubConnection.invoke(method: "InvokeManyArgs7", 42, 84, 126, 168, 210, 252, 294) { error in
+            hubConnection.invoke(method: "InvokeManyArgs7", arguments: 42, 84, 126, 168, 210, 252, 294) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1464,7 +1464,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             let arg5: String? = nil
-            hubConnection.invoke(method: "InvokeManyArgs8", "a", 2, "c", 4, arg5, 6, "g", true) { error in
+            hubConnection.invoke(method: "InvokeManyArgs8", arguments: "a", 2, "c", 4, arg5, 6, "g", true) { error in
                 XCTAssertNil(error)
                 didReceiveInvocationResult.fulfill()
                 hubConnection.stop()
@@ -1542,7 +1542,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
             didOpenExpectation.fulfill()
 
-            _ = hubConnection.stream(method: "StreamManyArgs1", 1, streamItemReceived: { item in items.append(item!) })
+            _ = hubConnection.stream(method: "StreamManyArgs1", arguments: 1, streamItemReceived: { item in items.append(item!) })
             { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1], items)
@@ -1574,7 +1574,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs2", 1, 2, streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs2", arguments: 1, 2, streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1, 2], items)
@@ -1606,7 +1606,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs3", "a", "b", "c", streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs3", arguments: "a", "b", "c", streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual(["a", "b", "c"], items)
@@ -1638,7 +1638,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs4", "a", "b", "c", "d", streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs4", arguments: "a", "b", "c", "d", streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual(["a", "b", "c", "d"], items)
@@ -1670,7 +1670,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs5", 1, 2, 3, 4, 5, streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs5", arguments: 1, 2, 3, 4, 5, streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1, 2, 3, 4, 5], items)
@@ -1702,7 +1702,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs6", 1, 2, 3, 4, 5, 6, streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs6", arguments: 1, 2, 3, 4, 5, 6, streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1, 2, 3, 4, 5, 6], items)
@@ -1734,7 +1734,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs7", 1, 2, 3, 4, 5, 6, 7, streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs7", arguments: 1, 2, 3, 4, 5, 6, 7, streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1, 2, 3, 4, 5, 6, 7], items)
@@ -1766,7 +1766,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             didOpenExpectation.fulfill()
 
             _ = hubConnection.stream(
-                method: "StreamManyArgs8", 1, 2, 3, 4, 5, 6, 7, 8, streamItemReceived: { item in items.append(item!) }
+                method: "StreamManyArgs8", arguments: 1, 2, 3, 4, 5, 6, 7, 8, streamItemReceived: { item in items.append(item!) }
             ) { error in
                 XCTAssertNil(error)
                 XCTAssertEqual([1, 2, 3, 4, 5, 6, 7, 8], items)
@@ -1834,7 +1834,7 @@ class HubConnectionExtensionsTests: XCTestCase {
 
             let clientStream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 0)
             _ = hubConnection.stream(
-                method: "StreamManyArgs1WithClientStream", 2, clientStream: clientStream,
+                method: "StreamManyArgs1WithClientStream", arguments: 2, clientStream: clientStream,
                 streamItemReceived: { item in items.append(item!) }
             ) {
                 error in
@@ -1869,7 +1869,7 @@ class HubConnectionExtensionsTests: XCTestCase {
 
             let clientStream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 0)
             _ = hubConnection.stream(
-                method: "StreamManyArgs2WithClientStream", 2, 4, clientStream: clientStream,
+                method: "StreamManyArgs2WithClientStream", arguments: 2, 4, clientStream: clientStream,
                 streamItemReceived: { item in items.append(item!) }
             ) {
                 error in
@@ -1904,7 +1904,7 @@ class HubConnectionExtensionsTests: XCTestCase {
 
             let clientStream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 0)
             _ = hubConnection.stream(
-                method: "StreamManyArgs3WithClientStream", 2, 4, 6, clientStream: clientStream,
+                method: "StreamManyArgs3WithClientStream", arguments: 2, 4, 6, clientStream: clientStream,
                 streamItemReceived: { item in items.append(item!) }
             ) {
                 error in
@@ -1939,7 +1939,7 @@ class HubConnectionExtensionsTests: XCTestCase {
 
             let clientStream = createAsyncStream(items: [1, 2, 3, 4, 5], sleepMs: 0)
             _ = hubConnection.stream(
-                method: "StreamManyArgs4WithClientStream", 2, 4, 6, 8, clientStream: clientStream,
+                method: "StreamManyArgs4WithClientStream", arguments: 2, 4, 6, 8, clientStream: clientStream,
                 streamItemReceived: { item in items.append(item!) }
             ) {
                 error in
@@ -1975,7 +1975,7 @@ class HubConnectionExtensionsTests: XCTestCase {
             var result: [MessageSHA] = []
 
             _ = hubConnection.stream(
-                method: "ComputeSHA", 1, clientStream: stream,
+                method: "ComputeSHA", arguments: 1, clientStream: stream,
                 streamItemReceived: { (item: MessageSHA) in result.append(item) },
                 invocationDidComplete: { error in
                     XCTAssertNil(error)
