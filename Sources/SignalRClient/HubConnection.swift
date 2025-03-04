@@ -468,8 +468,7 @@ public class HubConnection {
         return id
     }
 
-    private func failInvocationWithError(invocationHandler: ServerInvocationHandler, invocationId: String, error: Error)
-    {
+    private func failInvocationWithError(invocationHandler: ServerInvocationHandler, invocationId: String, error: Error) {
         hubConnectionQueue.sync {
             _ = pendingCalls.removeValue(forKey: invocationId)
         }
@@ -822,6 +821,42 @@ extension HandshakeStatus {
             return isReconnect
         default:
             return false
+        }
+    }
+}
+
+public extension HubConnection {
+    /// Cancels a streaming hub method with async/await support
+    /// - Parameter streamHandle: a `StreamHandle` identifying a hub method returned from the `stream` method
+    /// - Throws: Error details if cancelling the stream method failed
+    @available(iOS 13.0, *)
+    func cancelStreamInvocation(streamHandle: StreamHandle) async throws {
+        // Check if connection is started
+        guard handshakeStatus.isHandled else {
+            throw SignalRError.invalidOperation(message: "Attempting to send data before connection has been started.")
+        }
+
+        if streamHandle.invocationId.isEmpty {
+            throw SignalRError.invalidOperation(message: "Invalid stream handle.")
+        }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let cancelInvocationMessage = CancelInvocationMessage(invocationId: streamHandle.invocationId)
+            do {
+                let cancelInvocationData = try self.hubProtocol.writeMessage(message: cancelInvocationMessage)
+                self.connection.send(data: cancelInvocationData) { error in
+                    if let error = error {
+                        self.logger.log(logLevel: .error, message: "Stream cancellation failed: \(error)")
+                        continuation.resume(throwing: error)
+                    } else {
+                        self.resetKeepAlive()
+                        continuation.resume()
+                    }
+                }
+            } catch {
+                self.logger.log(logLevel: .error, message: "Stream cancellation failed: \(error)")
+                continuation.resume(throwing: error)
+            }
         }
     }
 }
