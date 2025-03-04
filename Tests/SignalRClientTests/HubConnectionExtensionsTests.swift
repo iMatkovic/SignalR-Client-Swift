@@ -39,7 +39,7 @@ class HubConnectionExtensionsTests: XCTestCase {
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(
             method: "ManyArgs",
-            callback: {
+            callback: {argumentExtractor in 
                 didInvokeClientMethod.fulfill()
             })
 
