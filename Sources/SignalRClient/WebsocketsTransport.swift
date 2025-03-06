@@ -36,14 +36,11 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
 
         authenticationChallengeHandler = options.authenticationChallengeHandler
 
-        // Check if we need to handle async token provider
         if options.hasAsyncTokenProvider() {
-            // Need to get the token asynchronously
             Task {
                 await self.startWithAsyncToken(url: url, options: options)
             }
         } else {
-            // Use synchronous path
             startWithSyncToken(url: url, options: options)
         }
     }
@@ -74,7 +71,6 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
         var request = URLRequest(url: convertUrl(url: url))
         populateHeaders(headers: options.headers, request: &request)
 
-        // Use async token provider
         if let token = await options.getAccessToken() {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }

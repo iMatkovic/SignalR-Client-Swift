@@ -48,11 +48,9 @@ class DefaultHttpClient: HttpClientProtocol {
         urlRequest.httpBody = body
         populateHeaders(headers: options.headers, request: &urlRequest)
 
-        // Handle token acquisition differently depending on the provider type
         if #available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *),
            options.hasAsyncTokenProvider()
         {
-            // We need to use Task to handle the async token provider
             Task {
                 do {
                     let token = await options.getAccessToken()
@@ -60,17 +58,13 @@ class DefaultHttpClient: HttpClientProtocol {
                         urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
                     }
 
-                    // Now send the request with the token (if any)
                     self.sendRequest(urlRequest: urlRequest, completionHandler: completionHandler)
                 }
             }
         } else {
-            // For compatibility with older code, try to cast to the standard type
             if let tokenProvider = options.accessTokenProvider as? () -> String? {
                 setAccessToken(accessTokenProvider: tokenProvider, request: &urlRequest)
             }
-
-            // Send the request immediately for the synchronous case
             sendRequest(urlRequest: urlRequest, completionHandler: completionHandler)
         }
     }
