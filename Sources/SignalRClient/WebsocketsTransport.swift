@@ -36,9 +36,31 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
 
         authenticationChallengeHandler = options.authenticationChallengeHandler
 
+        // Check if we need to handle async token provider
+        if options.hasAsyncTokenProvider() {
+            // Need to get the token asynchronously
+            Task {
+                await self.startWithAsyncToken(url: url, options: options)
+            }
+        } else {
+            // Use synchronous path
+            startWithSyncToken(url: url, options: options)
+        }
+    }
+
+    private func startWithSyncToken(url: URL, options: HttpConnectionOptions) {
         var request = URLRequest(url: convertUrl(url: url))
         populateHeaders(headers: options.headers, request: &request)
-        setAccessToken(accessTokenProvider: options.accessTokenProvider, request: &request)
+
+        // Use synchronous token provider
+        if let syncTokenProvider = options.accessTokenProvider as? () -> String? {
+            setAccessToken(accessTokenProvider: syncTokenProvider, request: &request)
+        }
+
+        setupAndStartWebSocketTask(with: request, options: options)
+    }
+
+    private func setupAndStartWebSocketTask(with request: URLRequest, options: HttpConnectionOptions) {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         webSocketTask = urlSession!.webSocketTask(with: request)
         if let maximumWebsocketMessageSize = options.maximumWebsocketMessageSize {
@@ -46,6 +68,18 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
         }
 
         webSocketTask!.resume()
+    }
+
+    private func startWithAsyncToken(url: URL, options: HttpConnectionOptions) async {
+        var request = URLRequest(url: convertUrl(url: url))
+        populateHeaders(headers: options.headers, request: &request)
+
+        // Use async token provider
+        if let token = await options.getAccessToken() {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        setupAndStartWebSocketTask(with: request, options: options)
     }
 
     public func send(data: Data, sendDidComplete: @escaping (Error?) -> Void) {
@@ -117,8 +151,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
 
         guard !markTransportClosed() else {
             logger.log(
-                logLevel: .debug, message: "Transport already marked as closed - ignoring error. (didCompleteWithError)"
-            )
+                logLevel: .debug, message: "Transport already marked as closed - ignoring error. (didCompleteWithError)")
             return
         }
 
@@ -126,8 +159,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
         logger.log(
             logLevel: .info,
             message:
-                "Error starting webSocket. Error: \(error!), HttpStatusCode: \(statusCode), WebSocket closeCode: \(webSocketTask?.closeCode.rawValue ?? -1)"
-        )
+            "Error starting webSocket. Error: \(error!), HttpStatusCode: \(statusCode), WebSocket closeCode: \(webSocketTask?.closeCode.rawValue ?? -1)")
         delegate?.transportDidClose(
             (statusCode != -1 && statusCode != 200) ? SignalRError.webError(statusCode: statusCode) : error)
         shutdownTransport()
@@ -205,7 +237,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
     }
 
     @inline(__always) private func populateHeaders(headers: [String: String], request: inout URLRequest) {
-        headers.forEach { (key, value) in
+        for (key, value) in headers {
             request.addValue(value, forHTTPHeaderField: key)
         }
     }
