@@ -25,10 +25,10 @@ public class HubConnectionBuilder {
     private var delegate: HubConnectionDelegate?
     private var reconnectPolicy: ReconnectPolicy = NoReconnectPolicy()
     private var permittedTransportTypes: TransportType = .all
-    private var transportFactory: ((Logger, TransportType) -> TransportFactory) =
-        { logger, permittedTransportTypes in
-            DefaultTransportFactory(logger: logger, permittedTransportTypes: permittedTransportTypes)
-        }
+    private var transportFactory: ((Logger, TransportType) -> TransportFactory) = { logger, permittedTransportTypes in
+        DefaultTransportFactory(logger: logger, permittedTransportTypes: permittedTransportTypes)
+    }
+
     /**
      Initializes a `HubConnectionBuilder` with a URL.
 
@@ -39,25 +39,37 @@ public class HubConnectionBuilder {
     }
 
     /**
-     Allows configuring a factory that creates a `HubProtocol` to be used by the client.
+      Allows configuring a factory that creates a `HubProtocol` to be used by the client.
 
-     - parameter hubProtocolFactory: a factory for creating the `HubProtocol` used by the client
-     - note: By default the client will use the `JSONHubProtocol`.
-    */
+      - parameter hubProtocolFactory: a factory for creating the `HubProtocol` used by the client
+      - note: By default the client will use the `JSONHubProtocol`.
+     */
     public func withHubProtocol(hubProtocolFactory: @escaping (Logger) -> HubProtocol) -> HubConnectionBuilder {
         self.hubProtocolFactory = hubProtocolFactory
         return self
     }
 
     /**
-     Allows configuring HTTP options (e.g. headers or authorization tokens).
+      Allows configuring HTTP options (e.g. headers or authorization tokens).
 
-     - parameter configureHttpOptions: a callback allowing to configure HTTP options
-    */
+      - parameter configureHttpOptions: a callback allowing to configure HTTP options
+     */
     public func withHttpConnectionOptions(
         configureHttpOptions: (_ httpConnectionOptions: HttpConnectionOptions) -> Void
     ) -> HubConnectionBuilder {
         configureHttpOptions(httpConnectionOptions)
+        return self
+    }
+
+    /**
+     Sets an async access token provider for the connection.
+
+     - parameter tokenProvider: An async closure that returns an access token or nil
+     - returns: The same instance of the `HubConnectionBuilder` for chaining
+     */
+    @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    public func withAsyncAccessTokenProvider(_ tokenProvider: @escaping @Sendable () async -> String?) -> HubConnectionBuilder {
+        httpConnectionOptions.accessTokenProvider = tokenProvider
         return self
     }
 
@@ -122,12 +134,12 @@ public class HubConnectionBuilder {
     }
 
     /**
-    Allows enabling and configuring automatic reconnection in case the connection was closed
+     Allows enabling and configuring automatic reconnection in case the connection was closed
 
-     - parameter reconnectPolicy: allows setting a reconnect policy that configures reconnection
-     - note: by default the connection is not reconnectable. Calling this method makes it reconnectable. If no `reconnectPolicy` is provided the
-             `DefaultReconnectPolicy` will be used.
-     */
+      - parameter reconnectPolicy: allows setting a reconnect policy that configures reconnection
+      - note: by default the connection is not reconnectable. Calling this method makes it reconnectable. If no `reconnectPolicy` is provided the
+              `DefaultReconnectPolicy` will be used.
+      */
     public func withAutoReconnect(reconnectPolicy: ReconnectPolicy = DefaultReconnectPolicy()) -> HubConnectionBuilder {
         self.reconnectPolicy = reconnectPolicy
         return self
@@ -141,7 +153,7 @@ public class HubConnectionBuilder {
         return self
     }
 
-    internal func withCustomTransportFactory(transportFactory: @escaping (Logger, TransportType) -> TransportFactory)
+    func withCustomTransportFactory(transportFactory: @escaping (Logger, TransportType) -> TransportFactory)
         -> HubConnectionBuilder
     {
         self.transportFactory = transportFactory
@@ -194,11 +206,11 @@ public class HubConnectionBuilder {
     }
 }
 
-extension HubConnectionBuilder {
+public extension HubConnectionBuilder {
     /**
      A convenience method for configuring a `HubConnection` to use the `JSONHubProtocol`.
      */
-    public func withJSONHubProtocol() -> HubConnectionBuilder {
-        return self.withHubProtocol(hubProtocolFactory: { logger in JSONHubProtocol(logger: logger) })
+    func withJSONHubProtocol() -> HubConnectionBuilder {
+        return withHubProtocol(hubProtocolFactory: { logger in JSONHubProtocol(logger: logger) })
     }
 }

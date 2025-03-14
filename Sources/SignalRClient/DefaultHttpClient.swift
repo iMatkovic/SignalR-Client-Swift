@@ -47,11 +47,32 @@ class DefaultHttpClient: HttpClientProtocol {
         urlRequest.httpMethod = method
         urlRequest.httpBody = body
         populateHeaders(headers: options.headers, request: &urlRequest)
-        setAccessToken(accessTokenProvider: options.accessTokenProvider, request: &urlRequest)
 
+        if #available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *),
+           options.hasAsyncTokenProvider()
+        {
+            Task {
+                do {
+                    let token = await options.getAccessToken()
+                    if let token = token {
+                        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+                    }
+
+                    self.sendRequest(urlRequest: urlRequest, completionHandler: completionHandler)
+                }
+            }
+        } else {
+            if let tokenProvider = options.accessTokenProvider as? () -> String? {
+                setAccessToken(accessTokenProvider: tokenProvider, request: &urlRequest)
+            }
+            sendRequest(urlRequest: urlRequest, completionHandler: completionHandler)
+        }
+    }
+
+    private func sendRequest(urlRequest: URLRequest, completionHandler: @escaping (HttpResponse?, Error?) -> Void) {
         session.dataTask(
             with: urlRequest,
-            completionHandler: { (data, response, error) in
+            completionHandler: { data, response, error in
                 var resp: HttpResponse?
                 if error == nil {
                     resp = HttpResponse(statusCode: (response as! HTTPURLResponse).statusCode, contents: data)
@@ -63,7 +84,7 @@ class DefaultHttpClient: HttpClientProtocol {
     }
 
     @inline(__always) private func populateHeaders(headers: [String: String], request: inout URLRequest) {
-        headers.forEach { (key, value) in
+        for (key, value) in headers {
             request.addValue(value, forHTTPHeaderField: key)
         }
     }
